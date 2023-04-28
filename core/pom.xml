@@ -75,7 +75,7 @@
             <artifactId>diffj</artifactId>
             <version>1.6.4</version>
             <scope>system</scope>
-            <systemPath>diffj-1.6.4.jar</systemPath>
+            <systemPath>/src/app/diffj-1.6.4.jar</systemPath>
         </dependency>
 
 
