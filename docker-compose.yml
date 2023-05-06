@@ -19,6 +19,7 @@ services:
 
   web:
     build: ./core
+    image: openszz-cloud-native_web:no-additional-tools
     ports:
     - "${PORTRANGE_FROM}-${PORTRANGE_TO}:8080"
     networks:
@@ -32,6 +33,7 @@ services:
   results:
     container_name: results
     build: ./dispatcher
+    image: openszz-cloud-native_results:no-additional-tools
     ports:
     - ${DISPATCHER_PORT}
     - "${DISPATCHER_PORT}:8888"
@@ -50,6 +52,7 @@ services:
 
   app:
     build: ./gui
+    image: openszz-cloud-native_app:no-additional-tools
     ports:
     - "${APP_PORT}:8080"
     networks:
