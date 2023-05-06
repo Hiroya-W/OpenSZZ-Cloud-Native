@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 import com.rest.szz.entities.Transaction.FileInfo;
 import com.rest.szz.git.Git;
-import gr.uom.java.xmi.diff.CodeRange;
 import org.eclipse.jgit.revwalk.RevCommit;
 
 public class LinkUtils {
@@ -101,15 +100,6 @@ public class LinkUtils {
         return result;
     }
 
-    public static List<Integer> removeRefactoringLines(ArrayList<CodeRange> refactoringCodeRanges, String filename, List<Integer> linesMinus) {
-        for (CodeRange codeRange: refactoringCodeRanges) {
-            if (codeRange.getFilePath().equals(filename)) {
-                linesMinus.removeIf(n -> n >= codeRange.getStartLine() && n <= codeRange.getEndLine());
-            }
-        }
-        return linesMinus;
-    }
-
     public static List<Integer> getLinesMinus(Git git, String commitId, String fileName, boolean ignoreCommentChanges, PrintWriter l) {
         List<Integer> linesMinus = new LinkedList<>();
         String diff = git.getDiff(commitId, fileName, l);
@@ -123,10 +113,6 @@ public class LinkUtils {
         return linesMinus;
     }
 
-    public static List<Integer> getLinesMinusJava(Git git, String commitId, String fileName, boolean ignoreCommentChanges, PrintWriter l, ArrayList<CodeRange> refactoringCodeRanges) {
-        List<Integer> linesMinus = getLinesMinus(git, commitId, fileName,ignoreCommentChanges, l);
-        return removeRefactoringLines(refactoringCodeRanges, fileName, linesMinus);
-    }
 
     public static Set<Suspect> getSuspectsByAddressedIssues(Set<String> issueIds, String currentIssueKey, Git git,String source) {
         Set<Suspect> suspects = new LinkedHashSet<>();

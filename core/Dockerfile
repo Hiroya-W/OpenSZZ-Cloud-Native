@@ -1,4 +1,4 @@
-FROM maven:3.6.3-jdk-11-slim AS build
+FROM maven:alpine as build
 WORKDIR /src/app
 COPY pom.xml .
 RUN mvn dependency:go-offline
@@ -6,7 +6,7 @@ RUN mvn dependency:go-offline
 COPY src/ ./src
 RUN mvn install -X
 
-FROM adoptopenjdk/openjdk11:jre-11.0.9.1_1-alpine
+FROM openjdk:8-jdk-alpine
 VOLUME /tmp
 ARG JAR_FILE
 

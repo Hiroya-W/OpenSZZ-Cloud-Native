@@ -12,9 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.rest.szz.entities.*;
-import org.eclipse.jgit.lib.Repository;
-import org.refactoringminer.api.GitService;
-import org.refactoringminer.util.GitServiceImpl;
 
 public class Application {
 
@@ -204,17 +201,10 @@ public class Application {
         try {
             printWriter = new PrintWriter(Application.workingDirectory + File.separator+token+".csv");
             printWriter.println("bugFixingId;bugFixingTs;bugFixingFileChanged;bugInducingId;bugInducingTs;" + (this.useJira ? "issueId" : "bugFixingCommitMessage") + ";note");
-
-            String repositoryDirectory = this.transactionManager.getGit().workingDirectory.toString();
-            String repositoryUrl = this.sourceCodeRepository.toString();
-            GitService gitService = new GitServiceImpl();
-            Repository repository = gitService.cloneIfNotExists(repositoryDirectory,repositoryUrl);
-            RefactoringMiner refactoringMiner = new RefactoringMiner(repository);
-
             for (Link l : links){
                 if (count % 100 == 0)
                     writer.println(count + " Commits left");
-                l.calculateSuspects(transactionManager.getGit(),writer,addAllBFCToResult,useIssueInfo, this.ignoreCommentChanges,refactoringMiner);
+                l.calculateSuspects(transactionManager.getGit(),writer,addAllBFCToResult,useIssueInfo, this.ignoreCommentChanges);
                 String pattern = "yyyy-MM-dd'T'HH:mm:ssZ";
                 SimpleDateFormat format1 = new SimpleDateFormat(pattern);
                 String lastValue = this.useJira ? (projectName + "-" + l.issue.getId()) : l.transaction.getComment();
