@@ -200,7 +200,7 @@ public class Link {
         }
 
 		for (FileInfo fi : transaction.getFiles()) {
-            if (LinkUtils.isCodeFile(fi)) {
+            if (LinkUtils.isJavaFile(fi)) {
                 List<Integer> linesMinus = LinkUtils.getLinesMinus(git, transaction.getId(), fi.filename, ignoreCommentChanges, l);
                 if (linesMinus == null || linesMinus.isEmpty()) {
                     this.suspects.add(new Suspect(null, null, fi.filename, "No changed lines, only additions"));
