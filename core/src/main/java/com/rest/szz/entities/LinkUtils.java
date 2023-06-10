@@ -156,7 +156,19 @@ public class LinkUtils {
     }
 
     public static Boolean isJavaFile(FileInfo file) {
-        return file.filename.endsWith(".java") && !file.filename.endsWith("package-info.java");
+        // TEST_FILES = re.compile(r'(^|\/)(test|tests|test_long_running|testing|legacy-tests|testdata|test-framework|derbyTesting|unitTests|java\/stubs|test-lib|src\/it|src-lib-test|src-test|tests-src|test-cactus|test-data|test-deprecated|src_unitTests|test-tools|gateway-test-release-utils|gateway-test-ldap|nifi-mock)\/', re.IGNORECASE)
+        // DOCUMENTATION_FILES = re.compile(r'(^|\/)(doc|docs|example|examples|sample|samples|demo|tutorial|helloworld|userguide|showcase|SafeDemo)\/', re.IGNORECASE)
+        // OTHER_EXCLUSIONS = re.compile(r'(^|\/)(_site|auxiliary-builds|gen-java|external|nifi-external)\/', re.IGNORECASE)
+        boolean ret = file.filename.endsWith(".java") && !file.filename.endsWith("package-info.java");
+        Pattern testFiles = Pattern.compile("(^|\\/)(test|tests|test_long_running|testing|legacy-tests|testdata|test-framework|derbyTesting|unitTests|java\\/stubs|test-lib|src\\/it|src-lib-test|src-test|tests-src|test-cactus|test-data|test-deprecated|src_unitTests|test-tools|gateway-test-release-utils|gateway-test-ldap|nifi-mock)\\/", Pattern.CASE_INSENSITIVE);
+        Pattern documentationFiles = Pattern.compile("(^|\\/)(doc|docs|example|examples|sample|samples|demo|tutorial|helloworld|userguide|showcase|SafeDemo)\\/", Pattern.CASE_INSENSITIVE);
+        Pattern otherExclusions = Pattern.compile("(^|\\/)(_site|auxiliary-builds|gen-java|external|nifi-external)\\/", Pattern.CASE_INSENSITIVE);
+
+        Matcher testFilesMatcher = testFiles.matcher(file.filename);
+        Matcher documentationFilesMatcher = documentationFiles.matcher(file.filename);
+        Matcher otherExclusionsMatcher = otherExclusions.matcher(file.filename);
+
+        return ret && !testFilesMatcher.find() && !documentationFilesMatcher.find() && !otherExclusionsMatcher.find();
     }
 
     public static Suspect generateSuspect(RevCommit commit, String fileName) {
