@@ -156,7 +156,7 @@ public class LinkUtils {
     }
 
     public static Boolean isJavaFile(FileInfo file) {
-        return file.filename.endsWith(".java");
+        return file.filename.endsWith(".java") && !file.filename.endsWith("package-info.java");
     }
 
     public static Suspect generateSuspect(RevCommit commit, String fileName) {
